@@ -4,7 +4,7 @@ import omit from "lodash/omit";
 import Fuse from "fuse.js";
 import fileStorage from "@/utils/StorageDrivers/IndexedDB";
 import Vue from "vue"; // Switch storage drivers if needed
-import {setCalculatedRadius, setDetailFromContents} from "@/utils/stock"
+import {setDetailFromContents} from "@/utils/stock"
 export default {
   /**
    * Loads all the files available in the localstorage into the store
@@ -95,7 +95,9 @@ export default {
 
   updateFileContents: async ({ state, commit, dispatch }, { id, contents }) => {
     if (!id) return;
-
+    if (contents === undefined) {
+      contents = state.files[id].contents
+    }
     let stockFromDB = {}
     let stock = {
       "prices": [],
@@ -106,7 +108,6 @@ export default {
       // Set histories, company name
       stock["isStock"] = true
       setDetailFromContents(stock, contents)
-
       // Fetch stock information from external api
       await Vue.axios.get(`https://asia-northeast3-vibrant-crawler-315212.cloudfunctions.net/stock?symbol=${stock.company}`)
           .then(response => {

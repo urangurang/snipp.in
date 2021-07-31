@@ -185,6 +185,9 @@ export default {
    * @param {String} payload.id id of the file to set active
    */
   setActiveFile: async ({ state, commit, dispatch }, { editor, id }) => {
+    // update stock info latest
+    dispatch("Files/updateFileContents", {id}, { root:true })
+
     commit(types.SET_ACTIVE_FILES, {
       ...state.activeFiles,
       [editor]: id,
