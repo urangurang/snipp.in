@@ -233,7 +233,7 @@ export default {
     },
   },
   created() {
-    this.debouncedFileUpdate = debounce(this.updateFileContents, 1000);
+    this.debouncedFileUpdate = debounce(this.updateFileContents, 5000);
     this.EDITORS = EDITORS;
   },
 };
